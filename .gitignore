@@ -1,0 +1,30 @@
+# Xcode
+## User settings
+xcuserdata/
+## Build results
+[Dd]erivedData
+[Dd]eveloper
+*.xcuserstate
+*.xcworkspace/xcuserdata
+*.moved-aside
+
+# Swift Package Manager
+.swiftpm/
+Packages/ackage.resolved
+
+# CocoaPods
+Pods/
+*.xcworkspace
+
+# IDE
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*~.nib
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+*~
