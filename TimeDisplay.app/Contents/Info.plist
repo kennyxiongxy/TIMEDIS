@@ -10,6 +10,10 @@
 	<string>TimeDisplay</string>
 	<key>CFBundleExecutable</key>
 	<string>TimeDisplay</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.timedisplay.TimeDisplay</string>
 	<key>CFBundleInfoDictionaryVersion</key>
