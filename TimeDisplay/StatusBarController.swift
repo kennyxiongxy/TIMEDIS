@@ -18,9 +18,21 @@ class StatusBarController {
 
     private func setupStatusButton() {
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "clock.fill", accessibilityDescription: "Time Display")
+            button.image = Self.brandStatusImage()
             button.imagePosition = .imageOnly
         }
+    }
+
+    /// 菜单栏图标：使用与 App Icon 同源的品牌图形（模板图，随菜单栏明暗自动反色）。
+    /// 资产缺失时回落到系统时钟符号，保证不会出现空白按钮。
+    private static func brandStatusImage() -> NSImage? {
+        guard let brand = NSImage(named: "MenuBarIcon") else {
+            return NSImage(systemSymbolName: "clock.fill", accessibilityDescription: "Time Display")
+        }
+        brand.isTemplate = true
+        brand.size = NSSize(width: 18, height: 18)
+        brand.accessibilityDescription = "Time Display"
+        return brand
     }
 
     private func setupMenu() {

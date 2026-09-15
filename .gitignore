@@ -4,6 +4,7 @@ xcuserdata/
 ## Build results
 [Dd]erivedData
 [Dd]eveloper
+build/
 *.xcuserstate
 *.xcworkspace/xcuserdata
 *.moved-aside

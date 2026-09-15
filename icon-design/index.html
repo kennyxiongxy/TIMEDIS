@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TimeDisplay · 新 App Icon 设计说明</title>
+<style>
+  :root{
+    --ink:#0E1114; --panel:#171C22; --panel2:#1D232A; --line:rgba(255,255,255,.09);
+    --text:#E9E6E0; --dim:#98A2AC; --dim2:#6B757F; --mint:#7FE3C4; --paper:#F4F2EE;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--ink); color:var(--text); font-family:var(--sans);
+    font-size:15px; line-height:1.75; letter-spacing:.01em;
+    background-image:radial-gradient(900px 500px at 78% -8%, rgba(127,227,196,.07), transparent 62%);
+    background-repeat:no-repeat;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 32px 96px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mint)}
+  h1{font-size:38px;line-height:1.2;margin:14px 0 10px;font-weight:600;letter-spacing:-.01em}
+  h2{font-size:22px;margin:0 0 6px;font-weight:600;letter-spacing:-.005em}
+  h3{font-size:15px;margin:0 0 8px;font-weight:600}
+  p{margin:0 0 14px;color:#CFD5D9}
+  a{color:var(--mint)}
+  .lede{font-size:17px;color:#C6CDD2;max-width:64ch}
+  .meta{font-family:var(--mono);font-size:11.5px;color:var(--dim2);letter-spacing:.04em;margin-top:22px;display:flex;flex-wrap:wrap;gap:6px 22px}
+  section{margin-top:76px;padding-top:34px;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px}
+  .num{font-family:var(--mono);font-size:12px;color:var(--mint);letter-spacing:.14em;padding-top:6px}
+  .grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:start}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card.tight{padding:16px}
+  .mono{font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .kv{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.07);font-family:var(--mono);font-size:12px}
+  .kv:last-child{border-bottom:0}
+  .kv span:first-child{color:var(--dim2)}
+  .kv span:last-child{color:var(--text)}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:260px 1fr;gap:44px;align-items:center;margin-top:34px}
+  .hero-icon{width:260px;height:260px;display:block;border-radius:0}
+  .shot{border-radius:14px;display:block;width:100%;height:auto}
+  .onlight{background:var(--paper);padding:0;border-radius:14px}
+  .onlight img{filter:drop-shadow(0 8px 18px rgba(0,0,0,.22))}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .tab{
+    font-family:var(--sans);font-size:13px;color:var(--dim);background:var(--panel);
+    border:1px solid var(--line);border-radius:999px;padding:7px 16px;cursor:pointer;
+    transition:color .16s,border-color .16s,background .16s;
+  }
+  .tab:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+  .tab[aria-selected="true"]{color:#0E1114;background:var(--mint);border-color:var(--mint);font-weight:600}
+  .tab:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+
+  /* ---------- size ladder ---------- */
+  .ladder{display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap}
+  .step{text-align:center}
+  .step img{display:block;margin:0 auto;image-rendering:pixelated}
+  .step .lbl{font-family:var(--mono);font-size:11px;color:var(--dim2);margin-top:10px}
+
+  .pix{background:
+      linear-gradient(45deg,#20262d 25%,transparent 25%,transparent 75%,#20262d 75%),
+      linear-gradient(45deg,#20262d 25%,transparent 25%,transparent 75%,#20262d 75%);
+    background-size:12px 12px;background-position:0 0,6px 6px;background-color:#191e24}
+
+  /* ---------- menubar mock ---------- */
+  .menubar{
+    display:flex;align-items:center;gap:18px;height:30px;padding:0 14px;border-radius:9px;
+    font-size:13px;letter-spacing:.01em;border:1px solid var(--line);margin-bottom:12px;
+  }
+  .menubar.dark{background:linear-gradient(180deg,#2A2F36,#20252B);color:#F2F2F4}
+  .menubar.light{background:linear-gradient(180deg,#FBFBFC,#EDEDEF);color:#1A1A1C}
+  /* 模板图是纯黑 PNG；真实的深色菜单栏会由系统自动反色为白，这里如实模拟该行为 */
+  .menubar.dark img{filter:invert(1)}
+  .menubar .spacer{flex:1}
+  .menubar .sys{opacity:.62;font-size:12px}
+  .menubar img{display:block;height:18px;width:auto}
+  .note{font-family:var(--mono);font-size:11px;color:var(--dim2);letter-spacing:.03em}
+
+  /* ---------- swatches ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));gap:12px}
+  .sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+  .sw .chip{height:62px}
+  .sw .txt{padding:9px 11px;font-family:var(--mono);font-size:10.5px;line-height:1.6;color:var(--dim)}
+  .sw .txt b{display:block;color:var(--text);font-weight:500;font-size:11px}
+
+  code,kbd{font-family:var(--mono);font-size:12.5px;background:rgba(255,255,255,.06);
+    border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:#DCE2E6}
+  pre{background:#12171C;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto}
+  pre code{background:none;border:0;padding:0;font-size:12.5px;color:#C9D2D8}
+  ul{margin:0 0 14px;padding-left:20px;color:#CFD5D9}
+  li{margin-bottom:6px}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+    color:var(--mint);border:1px solid rgba(127,227,196,.35);border-radius:999px;padding:2px 10px;margin-bottom:10px}
+  footer{margin-top:80px;padding-top:26px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:11.5px;color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  @media (max-width:820px){
+    .hero{grid-template-columns:1fr;gap:26px}
+    .grid2,.grid3{grid-template-columns:1fr}
+    .wrap{padding:36px 20px 70px}
+    h1{font-size:29px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">TimeDisplay · App Icon</div>
+    <h1>把时间的“分隔符”放大成主角</h1>
+    <p class="lede">新图标不再画一只钟。它画的是 <code>HH:mm:ss</code> 里那个被所有人忽略、却每秒都在跳动的冒号——两块之间那道缝，就是“秒”发生的位置。</p>
+    <div class="meta">
+      <span>母版 1024×1024 · PNG</span>
+      <span>网格 Big Sur 824 安全区</span>
+      <span>曲率 superellipse n=5</span>
+      <span>输出 10 档（16→1024）</span>
+      <span>2026</span>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <img id="heroIcon" class="hero-icon" src="render/A/icon-256.png" alt="TimeDisplay 新图标《断秒》：深色 squircle 底板上，上方暖白色块与下方冷灰色块之间留出一道薄荷青的缝">
+    <div>
+      <div class="tag" id="heroTag">推荐方案 A</div>
+      <h2 id="heroName">《断秒》 The Interval</h2>
+      <p id="heroDesc">上限暖白＝“时”，下方冷灰＝“分”，中间那道缝是冒号本身，也是秒针永远走不到的那一格。薄荷青的呼吸光是全图唯一的彩色，面积不到 5%——它在说“这里正在发生事情”。</p>
+      <div class="tabs" role="tablist" aria-label="图标方案">
+        <button class="tab" role="tab" aria-selected="true"  data-od-id="icon-tab-a" data-concept="A">A · 断秒</button>
+        <button class="tab" role="tab" aria-selected="false" data-od-id="icon-tab-b" data-concept="B">B · 密度</button>
+        <button class="tab" role="tab" aria-selected="false" data-od-id="icon-tab-c" data-concept="C">C · 穿过</button>
+      </div>
+      <p class="note" id="heroNote"><span id="heroStatus">已安装为应用当前图标</span> · <span id="heroVerdict">小尺寸存活率最高，与 macOS 原生图标气质最接近。</span></p>
+    </div>
+  </div>
+
+  <!-- ================= 01 对比 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">01</div><h2>为什么旧图标不行</h2></div>
+    <div class="grid2">
+      <div>
+        <p>旧图标是“时间类应用的标准答案”：蓝色渐变加圆角方块、一个白圆环、一根指针。它准确，但没有信息量——把市场上任何一个时钟 App 的图标盖住名字放进来，都分不出谁是谁。</p>
+        <p>更要紧的是它说错了话。这个 App 的核心并不是“报时”，而是<strong>常驻菜单栏的极简存在感</strong>与<strong>完全可定制的外观</strong>。圆环指针讲的是前者最平庸的那一面。</p>
+        <p>新图标换掉了整个隐喻层级：从“画一个计时仪器”改成“画时间的最小符号单位”。钟表家族（表盘、指针、沙漏、怀表、闹钟、日历）全部绕开，连一个圆都没有。</p>
+      </div>
+      <div class="card">
+        <div class="grid2" style="grid-template-columns:1fr 1fr;gap:18px;align-items:center">
+          <figure style="margin:0;text-align:center">
+            <img class="shot" src="render/legacy/icon-256.png" alt="旧图标：蓝色渐变圆角方块，白色圆环与单根指针组成的时钟" style="border-radius:14px">
+            <figcaption class="note" style="margin-top:9px">旧 · 蓝色时钟</figcaption>
+          </figure>
+          <figure style="margin:0;text-align:center">
+            <img class="shot" src="render/A/icon-256.png" alt="新图标《断秒》：深色底板上两个圆角色块与一道发光的缝">
+            <figcaption class="note" style="margin-top:9px">新 · 断秒</figcaption>
+          </figure>
+        </div>
+        <p class="note" style="margin-top:16px">同一尺寸、同一背景下的真实渲染效果，非示意。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 02 规格 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">02</div><h2>几何规格</h2></div>
+    <div class="grid2">
+      <div class="card">
+        <div class="kv"><span>画布</span><span>1024 × 1024 px</span></div>
+        <div class="kv"><span>安全区</span><span>824 × 824，四边留白 100</span></div>
+        <div class="kv"><span>底板曲率</span><span>superellipse n = 5.0</span></div>
+        <div class="kv"><span>上块（时）</span><span>379 × 247，圆角 85</span></div>
+        <div class="kv"><span>缝（＝冒号）</span><span>高 197.8</span></div>
+        <div class="kv"><span>下块（分）</span><span>379 × 247，圆角 85</span></div>
+        <div class="kv"><span>块 : 缝</span><span>5 : 4</span></div>
+        <div class="kv"><span>唯一彩色</span><span>面积 &lt; 5%</span></div>
+      </div>
+      <div>
+        <p>底板没有用 CSS 那种圆弧圆角矩形，而是真正的 Apple superellipse（<code>|x/a|⁵ + |y/b|⁵ = 1</code>）。n=5 的收敛点在 45° 方向与 Apple 规范（824 安全区／184.3 圆角）几乎完全重合，所以轮廓和系统图标放在一起不会“差一点点”。</p>
+        <p>前景两块的圆角 85px 来自同一个比例（379 × 22.4%），形成“小 squircle 套在大 squircle 里”的自相似关系——这是它与普通圆角方块的区别所在。</p>
+        <p>约束只有一条必须守住：<strong>缝不能小于块高的三分之一</strong>。再窄一点，16px 下两块就会粘连成一根实心柱子，整套设计立刻失效。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 尺寸实测 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">03</div><h2>尺寸实测</h2></div>
+    <p style="max-width:70ch">App Icon 的成败在最小尺寸。下面是同一个矢量源文件按 4 倍超采样渲染后缩回的真实像素——小尺寸用最近邻放大，不做任何修饰。</p>
+    <div class="ladder pix" style="padding:30px 26px;border-radius:16px;border:1px solid var(--line)">
+      <div class="step"><img src="render/A/icon-16.png" width="80" height="80" alt="16px 图标放大 5 倍"><div class="lbl">16px · 5×</div></div>
+      <div class="step"><img src="render/A/icon-32.png" width="128" height="128" alt="32px 图标放大 4 倍"><div class="lbl">32px · 4×</div></div>
+      <div class="step"><img src="render/A/icon-64.png" width="192" height="192" alt="64px 图标放大 3 倍"><div class="lbl">64px · 3×</div></div>
+      <div class="step"><img src="render/A/icon-128.png" width="128" height="128" alt="128px 图标 1 比 1"><div class="lbl">128px · 1×</div></div>
+      <div class="step" style="margin-left:auto">
+        <img src="render/A/icon-512.png" width="132" height="132" alt="512px 图标缩略显示">
+        <div class="lbl">512px</div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:22px">
+      <div class="card tight"><h3>16px 靠什么活下来</h3><p style="margin:0;font-size:14px">靠“一块亮、一道缝、一块暗”的三段式明度节奏。缝隙被抗锯齿糊掉也没关系，轮廓会退化成一根有腰线的柱子——仍然不属于任何系统图标。</p></div>
+      <div class="card tight"><h3>不依赖颜色</h3><p style="margin:0;font-size:14px">上下块的明度差约 40%，即使完全去色、或在菜单栏被系统反色，结构依然成立。颜色只负责区分层级，不负责识别。</p></div>
+      <div class="card tight"><h3>没有可读文字</h3><p style="margin:0;font-size:14px">全图没有 <code>88:88</code>、没有缩写 “TD”。小尺寸下文字一定糊，占用面积却是最大的，所以一个字符都不放。</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 04 情境 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">04</div><h2>放进真实位置</h2></div>
+    <div class="grid2">
+      <div>
+        <h3>菜单栏</h3>
+        <div class="menubar dark">
+          <span style="font-weight:600"></span>
+          <span class="spacer"></span>
+          <span class="sys">Wi-Fi</span><span class="sys">电池</span>
+          <span class="sys">周四 22:44</span>
+          <img src="../TimeDisplay/Assets.xcassets/MenuBarIcon.imageset/menubar-18@2x.png" alt="品牌菜单栏图标：两枚圆角块上下排列">
+        </div>
+        <div class="menubar light">
+          <span style="font-weight:600"></span>
+          <span class="spacer"></span>
+          <span class="sys">Wi-Fi</span><span class="sys">电池</span>
+          <span class="sys">周四 22:44</span>
+          <img src="../TimeDisplay/Assets.xcassets/MenuBarIcon.imageset/menubar-18@2x.png" alt="品牌菜单栏图标在浅色菜单栏中的表现">
+        </div>
+        <p class="note">菜单栏示意图（非系统截图），左侧系统项为文字占位。</p>
+        <p style="margin-top:14px">菜单栏图形是同一母题的等缩版：两枚圆角块 + 一道缝，提交为 template image（纯黑 + alpha），系统会自动按明暗反色。<code>StatusBarController</code> 里原本使用的是 <code>clock.fill</code> —— 那正是这次要逃离的陈词滥调，现已一并替换；资产缺失时仍会回落到系统符号。</p>
+      </div>
+      <div>
+        <h3>并排体量</h3>
+        <div class="card pix" style="display:flex;gap:26px;justify-content:center;align-items:flex-end;padding:26px 18px">
+          <img src="render/A/icon-128.png" width="72" height="72" alt="新图标 128px">
+          <div style="width:72px;height:72px;border-radius:16px;background:#2A3138" aria-hidden="true"></div>
+          <img src="render/A/icon-128.png" width="72" height="72" alt="新图标 128px">
+          <div style="width:72px;height:72px;border-radius:16px;background:#2A3138" aria-hidden="true"></div>
+        </div>
+        <p class="note" style="margin-top:12px">灰色方块为体量占位，非真实应用图标。</p>
+        <p style="margin-top:14px">深色底板在浅色窗口里有明确边界，在深色窗口里靠 7% 的边缘高光定义轮廓。它不会像浅底图标那样在白色背景上“化掉”，这是选择深色作为默认外观的实际原因。</p>
+        <p>顺带一个巧合：App 默认主题本身就是<strong>黑底白字 + 70% 不透明度</strong>，图标的明度关系与产品默认界面是同一套。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 配色 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">05</div><h2>配色与气质</h2></div>
+    <p class="lede" style="margin-bottom:22px">要的是「在呼吸的精密仪器」：精准来自比例，不来自锐利的科技蓝。</p>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#11161B"></div><div class="txt"><b>底板</b>#11161B → #1A2027</div></div>
+      <div class="sw"><div class="chip" style="background:#F5F3EE"></div><div class="txt"><b>上块 · 时</b>#F5F3EE → #DCD9D2</div></div>
+      <div class="sw"><div class="chip" style="background:#A3AEBA"></div><div class="txt"><b>下块 · 分</b>#A3AEBA → #828E99</div></div>
+      <div class="sw"><div class="chip" style="background:#7FE3C4"></div><div class="txt"><b>呼吸光 · 秒</b>#7FE3C4</div></div>
+      <div class="sw"><div class="chip" style="background:#F6F4EF"></div><div class="txt"><b>浅色版底板</b>#F6F4EF（自定义主题）</div></div>
+    </div>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card">
+        <h3 style="color:var(--mint)">应该有</h3>
+        <ul style="margin:0">
+          <li>冷静、克制，长期挂在菜单栏也不吵</li>
+          <li>大量负空间，而且空白是有功能的（它是那道缝）</li>
+          <li>最多两个色相，强调色面积 &lt; 5%</li>
+          <li>层次靠明度，不靠颜色</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:#E08A76">必须避免</h3>
+        <ul style="margin:0">
+          <li>科技蓝渐变 + 玻璃发光（“AI 味”最重的组合）</li>
+          <li>表盘、指针、沙漏、闹钟、日历——整个钟表家族</li>
+          <li>可爱贴纸感：过大圆角、多彩、拟物高光</li>
+          <li>可辨读的字符，包括 <code>88:88</code> 与 “TD”</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 06 备选 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">06</div><h2>备选方案</h2></div>
+    <p style="max-width:70ch">三个方向共用同一套底板与网格规范，切换只需一条命令。除 A 之外，其余方案已渲染好但未安装。</p>
+    <div class="grid3">
+      <div class="card">
+        <img class="shot" src="render/A/icon-256.png" alt="方案 A 断秒">
+        <h3 style="margin-top:16px">A ·《断秒》The Interval</h3>
+        <p style="font-size:14px;margin-bottom:10px">冒号本体放大成主角。两块之间的缝就是“秒”发生的地方，薄荷青呼吸光是全图唯一彩色。</p>
+        <p class="note">小尺寸存活最好 · 与系统图标气质最接近 · 已安装</p>
+        <p style="margin:12px 0 0"><img src="render/A/icon-16.png" width="16" height="16" alt="16px" style="image-rendering:pixelated;vertical-align:middle"> <img src="render/A/icon-32.png" width="32" height="32" alt="32px" style="image-rendering:pixelated;vertical-align:middle;margin-left:8px"></p>
+      </div>
+      <div class="card">
+        <img class="shot" src="render/B/icon-256.png" alt="方案 B 密度">
+        <h3 style="margin-top:16px">B ·《密度》Cadence</h3>
+        <p style="font-size:14px;margin-bottom:10px">不画时间，画时间的密度：十二根竖棒由密到疏，唯一一根信号橘是“此刻”。</p>
+        <p class="note">图形性最强 · 16px 会糊成灰雾 · 菜单栏需另做简化版</p>
+        <p style="margin:12px 0 0"><img src="render/B/icon-16.png" width="16" height="16" alt="16px" style="image-rendering:pixelated;vertical-align:middle"> <img src="render/B/icon-32.png" width="32" height="32" alt="32px" style="image-rendering:pixelated;vertical-align:middle;margin-left:8px"></p>
+      </div>
+      <div class="card">
+        <img class="shot" src="render/C/icon-256.png" alt="方案 C 穿过">
+        <h3 style="margin-top:16px">C ·《穿过》The Pass-Through</h3>
+        <p style="font-size:14px;margin-bottom:10px">把菜单栏本身画成主角：一条横线被一根竖线穿过，横线在交点处断开——秒正在贯流。</p>
+        <p class="note">最贴产品行为 · 元素最多，小尺寸略吵</p>
+        <p style="margin:12px 0 0"><img src="render/C/icon-16.png" width="16" height="16" alt="16px" style="image-rendering:pixelated;vertical-align:middle"> <img src="render/C/icon-32.png" width="32" height="32" alt="32px" style="image-rendering:pixelated;vertical-align:middle;margin-left:8px"></p>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:26px">
+      <div>
+        <h3>浅色版（A 的另一种外观）</h3>
+        <div class="onlight" style="padding:22px;text-align:center">
+          <img src="render/A-light/icon-256.png" alt="浅色版图标：米白底板上深色与灰色块" style="width:150px;height:150px;display:inline-block">
+        </div>
+        <p class="note" style="margin-top:10px">同一几何，只换配色。适合作为“自定义浅色主题”的视觉呼应。</p>
+      </div>
+      <div>
+        <h3>切换方案</h3>
+        <pre><code># 重新安装某个概念为应用图标
+python3 icon-design/build_icons.py --concept B
+
+# 只渲染预览，不动资产目录
+python3 icon-design/build_icons.py --render-only</code></pre>
+        <p>色板在 <code>build_icons.py</code> 顶部的 <code>PALETTE_DARK</code> / <code>PALETTE_LIGHT</code> 里，改一处即可整体换色——这正好呼应 App 自己的“可定制外观”。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 07 落地 ================= -->
+  <section>
+    <div class="sec-head"><div class="num">07</div><h2>落地清单</h2></div>
+    <div class="grid2">
+      <div class="card">
+        <div class="kv"><span>矢量源</span><span>icon-design/build_icons.py</span></div>
+        <div class="kv"><span>应用图标</span><span>AppIcon.appiconset · 10 档</span></div>
+        <div class="kv"><span>菜单栏图形</span><span>MenuBarIcon.imageset（template）</span></div>
+        <div class="kv"><span>母版</span><span>app_icon.png · 1024</span></div>
+        <div class="kv"><span>菜单栏代码</span><span>StatusBarController.swift</span></div>
+        <div class="kv"><span>渲染输出</span><span>icon-design/render/</span></div>
+      </div>
+      <div>
+        <h3>重建</h3>
+        <pre><code>export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+xcodegen generate
+xcodebuild -project TimeDisplay.xcodeproj \
+  -target TimeDisplay -configuration Release build</code></pre>
+        <p class="note">本机 <code>xcode-select</code> 指向 Command Line Tools，直接跑 xcodebuild 会报 “requires Xcode”，用 DEVELOPER_DIR 覆盖即可（Xcode 26.6 已安装）。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>TimeDisplay · App Icon v1 · 断秒 The Interval</span>
+    <span>几何 superellipse n=5 · 10 档输出 · 无位图素材</span>
+  </footer>
+</div>
+
+<script>
+  const CONCEPTS = {
+    A: {
+      tag: '推荐方案 A',
+      name: '《断秒》 The Interval',
+      desc: '上方暖白＝“时”，下方冷灰＝“分”，中间那道缝是冒号本身，也是秒针永远走不到的那一格。薄荷青的呼吸光是全图唯一的彩色，面积不到 5%——它在说“这里正在发生事情”。',
+      verdict: '小尺寸存活率最高，与 macOS 原生图标气质最接近。',
+      installed: true
+    },
+    B: {
+      tag: '备选方案 B',
+      name: '《密度》 Cadence',
+      desc: '不画时间，画时间的密度：一分钟被切成十二段，由密到疏、由高到低，像一段正在被消耗的节奏。唯一一根信号橘是“此刻”。',
+      verdict: '图形性最强、最“插画”，但 16px 下细棒会糊成灰雾，菜单栏需另做简化版。',
+      installed: false
+    },
+    C: {
+      tag: '备选方案 C',
+      name: '《穿过》 The Pass-Through',
+      desc: '把菜单栏本身画成主角：一条横贯的细线是菜单栏，两枚圆点是时与分，横线在竖线处断开——秒正在穿过它。',
+      verdict: '最贴产品真实行为，但元素最多，小尺寸最吵。',
+      installed: false
+    }
+  };
+  const icon = document.getElementById('heroIcon');
+  const tag = document.getElementById('heroTag');
+  const name = document.getElementById('heroName');
+  const desc = document.getElementById('heroDesc');
+  const verdict = document.getElementById('heroVerdict');
+  const status = document.getElementById('heroStatus');
+  const note = document.getElementById('heroNote');
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+
+  function select(key, persist) {
+    const c = CONCEPTS[key];
+    icon.src = 'render/' + key + '/icon-256.png';
+    icon.alt = 'TimeDisplay 图标方案 ' + key + '：' + c.name;
+    tag.textContent = c.tag;
+    name.textContent = c.name;
+    desc.textContent = c.desc;
+    verdict.textContent = c.verdict;
+    status.textContent = c.installed ? '已安装为应用当前图标' : '预览中，尚未安装';
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.concept === key)));
+    if (persist) { try { localStorage.setItem('timedis-icon-concept', key); } catch (e) {} }
+  }
+  tabs.forEach(t => t.addEventListener('click', () => select(t.dataset.concept, true)));
+
+  let saved = null;
+  try { saved = localStorage.getItem('timedis-icon-concept'); } catch (e) {}
+  select(CONCEPTS[saved] ? saved : 'A', false);
+</script>
+</body>
+</html>
